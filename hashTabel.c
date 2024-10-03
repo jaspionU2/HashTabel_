@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Node{
+struct Node
+{
     int info;
     struct Node* prox;
 };
@@ -13,6 +14,7 @@ int insertValue(struct Node** list, int sizeList, int value);
 int searchValue(struct Node**, int sizeList, int value);
 struct Node* createNode(int value);
 int deleteValue(struct Node** list, int sizeList, int value);
+void deleteList(struct Node** list, int sizeList);
 
 
 int main() {
@@ -20,7 +22,8 @@ int main() {
     struct Node* list[9];
 
     int sizeList = (int) sizeof(list) / sizeof(list[0]);
-    for(int i = 0; i < sizeList; i++) {
+    for(int i = 0; i < sizeList; i++) 
+    {
         list[i] = NULL;
     }
 
@@ -31,7 +34,8 @@ int main() {
     {
        printf("Escolha uma das opções:\n[1] - Inserir um valor\n[2] - Exibir os valores\n[3] - Procurar um valor\n[4] - remover um valor\n[5] - Encerrar o programa\nDigite a sua escolha: ");
 
-       if(scanf("%d", &controller) != 1){
+       if(scanf("%d", &controller) != 1)
+       {
           printf("ERRO: o valor inserido não é valido");
           while(getchar() != '\n');
        }
@@ -84,7 +88,8 @@ int main() {
         printf("digite o valor a ser removido: ");
         scanf("%d", &value);
 
-        if(deleteValue(list, sizeList, value) == -1){
+        if(deleteValue(list, sizeList, value) == -1)
+        {
           printf("ERRO: Valor não foi encontrado na lista.\n");
         }
 
@@ -101,13 +106,18 @@ int main() {
 
         
     } while (controller != 5);
-    
-    
+
+    deleteList(list, sizeList);
+
+
+    show(list, sizeList);
+
     return 0;
 }
 
 
-struct Node* createNode(int value){
+struct Node* createNode(int value)
+{
    struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));
 
    newNode->info = value;
@@ -116,7 +126,27 @@ struct Node* createNode(int value){
    return newNode;
 }
 
-int deleteValue(struct Node** list, int sizeList, int value){
+void deleteList(struct Node** list, int sizeList){
+
+  struct Node* moveList = NULL; 
+    struct Node* temp = NULL;
+
+    for(int i = 0; i < sizeList; i++)
+    {
+      moveList = list[i];
+
+       while (moveList != NULL) {
+        temp = moveList;         
+        moveList = moveList->prox; 
+        free(temp);              
+    }
+    list[i] = NULL;
+  }
+   
+}
+
+int deleteValue(struct Node** list, int sizeList, int value)
+{
     int position = getPosition(value, sizeList);
 
     if(position >= sizeList){
@@ -148,7 +178,8 @@ int deleteValue(struct Node** list, int sizeList, int value){
 
 }
 
-int searchValue(struct Node** list, int sizeList, int value){
+int searchValue(struct Node** list, int sizeList, int value)
+{
     int position = getPosition(value, sizeList);
 
     if(position >= sizeList){
@@ -170,7 +201,8 @@ int searchValue(struct Node** list, int sizeList, int value){
     return -1;
 }
 
-int insertValue(struct Node** list, int sizeList, int value) {
+int insertValue(struct Node** list, int sizeList, int value) 
+{
    struct Node* Node = createNode(value);
 
    int position = getPosition(value, sizeList);
@@ -195,7 +227,8 @@ int insertValue(struct Node** list, int sizeList, int value) {
          return 0;
 }
 
-void show(struct Node** list, int sizeList) {
+void show(struct Node** list, int sizeList)
+{
     for(int i = 0; i < sizeList; i++) 
     {
        struct Node* current = list[i];
@@ -212,7 +245,8 @@ void show(struct Node** list, int sizeList) {
     
 }
 
-int getPosition(int value, int arraySize) {
+int getPosition(int value, int arraySize) 
+{
    
    if(value < 0)
    {
